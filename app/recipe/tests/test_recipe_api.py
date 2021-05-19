@@ -3,7 +3,7 @@ import os
 
 from PIL import Image
 
-from django.contrib.auth import REDIRECT_FIELD_NAME, get_user_model
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
@@ -244,6 +244,7 @@ class RecipeImageUploadTest(TestCase):
         recipe1.tags.add(tag1)
         recipe2.tags.add(tag2)
         recipe3 = sample_recipe(user=self.user, title='Fish and chips')
+
         res = self.client.get(
             RECIPES_URL,
             {'tags': f'{tag1.id},{tag2.id}'}
@@ -252,7 +253,6 @@ class RecipeImageUploadTest(TestCase):
         serializer1 = RecipeSerializer(recipe1)
         serializer2 = RecipeSerializer(recipe2)
         serializer3 = RecipeSerializer(recipe3)
-
         self.assertIn(serializer1.data, res.data)
         self.assertIn(serializer2.data, res.data)
         self.assertNotIn(serializer3.data, res.data)
@@ -277,4 +277,4 @@ class RecipeImageUploadTest(TestCase):
         serializer3 = RecipeSerializer(recipe3)
         self.assertIn(serializer1.data, res.data)
         self.assertIn(serializer2.data, res.data)
-        self.assertNotIn(serializer2.data, res.data)
+        self.assertNotIn(serializer3.data, res.data)
